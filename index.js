@@ -116,22 +116,15 @@ Bot.prototype.sendImage = function(_file) {
       body: JSON.stringify(package)
     },
     function(err, response, body) {
-      if (!err) {
-        var form = new formidable.IncomingForm();
-        var messageFields = {};
-        form.parse(request, function(err, fields, files) {
-          if (err) console.error("bad incoming data " + err);
-        });
-
-        form.on('field', function(name, value) {
-          messageFields[name] = value;
-        });
-        self.emit('botImage', self, {
-          url: messageFields.payload.url,
-          picture_url: messageFields.payload.picture_url,
-          payload: messageFields.payload
-        });
-      }
+      var imageJson = JSON.parse(respone);
+      console.log(imageJson);
+      console.log(imageJson.payload);
+      console.log(imageJson.payload.url);
+      self.emit('botImage', self, {
+        url: imageJson.payload.url,
+        picture_url: imageJson.payload.picture_url,
+        payload: imageJson.payload
+      });
     });
 };
 
