@@ -11,9 +11,10 @@ const formidable = require('formidable');
 //          name: the bot name,
 //          url: optional callback,
 //          avatar_url: optional avatar image
-function Bot (config) {
-  if (! (this instanceof Bot)) return new Bot(config);
-  for (var key in config) if ( config.hasOwnProperty(key) )  this[key] = config[key];
+function Bot(config) {
+  if (!(this instanceof Bot)) return new Bot(config);
+  for (var key in config)
+    if (config.hasOwnProperty(key)) this[key] = config[key];
   if (this.token && this.group && this.name) {
     console.log("registering the bot");
     this.registerBot();
@@ -28,10 +29,15 @@ util.inherits(Bot, events.EventEmitter);
 // arg: address to serve on
 Bot.prototype.serve = function(address) {
   var self = this;
-  var server = http.createServer(function (request, response) {
+  var server = http.createServer(function(request, response) {
     if (request.url == '/' && request.method == 'GET') {
-      response.writeHead(200, {"Content-Type": "application/json"});
-      response.end(JSON.stringify({'name': self.name, 'group': self.group}));
+      response.writeHead(200, {
+        "Content-Type": "application/json"
+      });
+      response.end(JSON.stringify({
+        'name': self.name,
+        'group': self.group
+      }));
     } else if (request.url == '/incoming' && request.method == 'POST') {
       var form = new formidable.IncomingForm();
       var messageFields = {};
@@ -44,13 +50,30 @@ Bot.prototype.serve = function(address) {
       });
 
       form.on('end', function() {
-        response.writeHead(200, {"Content-Type": "text/plain"});
+        response.writeHead(200, {
+          "Content-Type": "text/plain"
+        });
         response.end("THANKS");
-        self.emit('botMessage', self, { name:messageFields.name, text:messageFields.text });
+        self.emit('botMessage', self, {
+          attachments: messageFields.attachments,
+          avatar_url: messageFields.avatar_url,
+          created_at: messageFields.created_at,
+          group_id: messageFields.group_id,
+          id: messageFields.id,
+          name: messageFields.name,
+          sender_id: messageFields.sender_id,
+          sender_type: messageFields.sender_type,
+          source_guid: messageFields.source_guid,
+          system: messageFields.system,
+          text: messageFields.text,
+          user_id: messageFields.user_id
+        });
       });
 
     } else {
-      response.writeHead(404, {"Content-Type": "text/plain"});
+      response.writeHead(404, {
+        "Content-Type": "text/plain"
+      });
       response.end("NOT FOUND");
     }
 
@@ -65,22 +88,35 @@ Bot.prototype.message = function(_message) {
   var package = {};
   package.text = _message;
   package.bot_id = this.botId;
-  request( { url:url, method:'POST', body: JSON.stringify(package) });
+  request({
+    url: url,
+    method: 'POST',
+    body: JSON.stringify(package)
+  });
 };
 
 // destroys a bot by id, if no bot_id is sent, unregisters itself
 Bot.prototype.unRegister = function(bot_id, callback) {
   var url = 'https://api.groupme.com/v3/bots/destroy?token=' + this.token;
-  request( { url : url, method : 'POST', body : JSON.stringify({bot_id:bot_id}) },
-           function(error, response, body) {
-             callback();
-           });
+  request({
+      url: url,
+      method: 'POST',
+      body: JSON.stringify({
+        bot_id: bot_id
+      })
+    },
+    function(error, response, body) {
+      callback();
+    });
 };
 
 // get a list of registered bots
 Bot.prototype.allBots = function(callback) {
   var url = 'https://api.groupme.com/v3/bots?token=' + this.token;
-  request( { url : url, method : 'GET' }, function(err, response, body) {
+  request({
+    url: url,
+    method: 'GET'
+  }, function(err, response, body) {
     body = JSON.parse(body);
     var bots = [];
     _.each(body.response, function(bot) {
@@ -135,18 +171,24 @@ Bot.prototype.registerBot = function() {
         bot.avatar_url = this.avatar_url;
       };
       var url = 'https://api.groupme.com/v3/bots?token=' + this.token;
-      request( { url:url, method:'POST', body: JSON.stringify( { bot:bot } ) },
-               function(error, response, body) {
-                 if (!error) {
-                   var parsedBody = JSON.parse(body).response.bot;
-                   callback(null, parsedBody.bot_id);
-                 } else {
-                   callback(error);
-                 }
-               }
-             );
+      request({
+          url: url,
+          method: 'POST',
+          body: JSON.stringify({
+            bot: bot
+          })
+        },
+        function(error, response, body) {
+          if (!error) {
+            var parsedBody = JSON.parse(body).response.bot;
+            callback(null, parsedBody.bot_id);
+          } else {
+            callback(error);
+          }
+        }
+      );
     }.bind(this)
-  ], function (err, bot_id) {
+  ], function(err, bot_id) {
     this.botId = bot_id;
     this.emit('botRegistered', this);
   }.bind(this));
