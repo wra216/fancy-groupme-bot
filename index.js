@@ -116,6 +116,7 @@ Bot.prototype.sendImage = function(_file) {
       body: JSON.stringify(package)
     },
     function(err, response, body) {
+      console.log(JSON.stringify(response));
       var imageJson = JSON.parse(response);
       console.log(imageJson);
       console.log(imageJson.payload);
