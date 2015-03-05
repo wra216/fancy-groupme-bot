@@ -95,6 +95,19 @@ Bot.prototype.message = function(_message) {
   });
 };
 
+// upload an image
+Bot.prototype.sendImage = function(_file) {
+  var url = 'https://image.groupme.com/pictures';
+  var package = {};
+  package.file = _file;
+  package.access_token = this.token;
+  request({
+    url: url,
+    method: 'POST',
+    body: JSON.stringify(package)
+  });
+};
+
 // destroys a bot by id, if no bot_id is sent, unregisters itself
 Bot.prototype.unRegister = function(bot_id, callback) {
   var url = 'https://api.groupme.com/v3/bots/destroy?token=' + this.token;
