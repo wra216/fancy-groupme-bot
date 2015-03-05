@@ -115,17 +115,18 @@ Bot.prototype.sendImage = function(_file) {
       method: 'POST',
       body: JSON.stringify(package)
     },
-    function(err, response, body) {
-      console.log(response);
-      var imageJson = JSON.parse(body);
-      console.log(imageJson);
-      console.log(imageJson.payload);
-      console.log(imageJson.payload.url);
-      self.emit('botImage', self, {
-        url: imageJson.payload.url,
-        picture_url: imageJson.payload.picture_url,
-        payload: imageJson.payload
-      });
+    function(res) {
+      res.setEncoding('utf8');
+      console.log(res);
+      // var imageJson = JSON.parse(body);
+      // console.log(imageJson);
+      // console.log(imageJson.payload);
+      // console.log(imageJson.payload.url);
+      // self.emit('botImage', self, {
+      //   url: imageJson.payload.url,
+      //   picture_url: imageJson.payload.picture_url,
+      //   payload: imageJson.payload
+      // });
     });
 };
 
