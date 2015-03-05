@@ -66,7 +66,8 @@ Bot.prototype.serve = function(address) {
           source_guid: messageFields.source_guid,
           system: messageFields.system,
           text: messageFields.text,
-          user_id: messageFields.user_id
+          user_id: messageFields.user_id,
+          payload: messageFields.payload
         });
       });
 
