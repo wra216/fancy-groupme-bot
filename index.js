@@ -116,14 +116,12 @@ Bot.prototype.sendImage = function(_file) {
       body: JSON.stringify(package)
     },
     function(er, response, body) {
-      console.log(er);
-      console.log(response)
-      console.log(body);
-      self.emit('botImage', self, {
-        url: messageFields.payload.url,
-        picture_url: messageFields.payload.picture_url,
-        payload: messageFields.payload
-      });
+      console.log('response: ' + response);
+      // self.emit('botImage', self, {
+      //   url: messageFields.payload.url,
+      //   picture_url: messageFields.payload.picture_url,
+      //   payload: messageFields.payload
+      // });
     });
 };
 
