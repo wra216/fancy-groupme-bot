@@ -104,31 +104,30 @@ Bot.prototype.message = function(_message) {
   });
 };
 
-// upload an image
-Bot.prototype.sendImage = function(_file) {
-  var url = 'https://image.groupme.com/pictures';
-  var package = {};
-  package.file = _file;
-  package.access_token = this.token;
-  request({
-      url: url,
-      method: 'POST',
-      body: JSON.stringify(package)
-    },
-    function(res) {
-      res.setEncoding('utf8');
-      console.log(res);
-      // var imageJson = JSON.parse(body);
-      // console.log(imageJson);
-      // console.log(imageJson.payload);
-      // console.log(imageJson.payload.url);
-      // self.emit('botImage', self, {
-      //   url: imageJson.payload.url,
-      //   picture_url: imageJson.payload.picture_url,
-      //   payload: imageJson.payload
-      // });
-    });
-};
+// // upload an image
+// Bot.prototype.sendImage = function(_file) {
+//   var url = 'https://image.groupme.com/pictures';
+//   var package = {};
+//   package.file = _file;
+//   package.access_token = this.token;
+//   request({
+//       url: url,
+//       method: 'POST',
+//       body: JSON.stringify(package)
+//     },
+//     function(err, response, body) {
+//       console.log(body);
+//       var imageJson = JSON.parse(body);
+//       console.log(imageJson);
+//       console.log(imageJson.payload);
+//       console.log(imageJson.payload.url);
+//       self.emit('botImage', self, {
+//         url: imageJson.payload.url,
+//         picture_url: imageJson.payload.picture_url,
+//         payload: imageJson.payload
+//       });
+//     });
+// };
 
 // destroys a bot by id, if no bot_id is sent, unregisters itself
 Bot.prototype.unRegister = function(bot_id, callback) {
