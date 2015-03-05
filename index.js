@@ -111,10 +111,20 @@ Bot.prototype.sendImage = function(_file) {
   package.file = _file;
   package.access_token = this.token;
   request({
-    url: url,
-    method: 'POST',
-    body: JSON.stringify(package)
-  });
+      url: url,
+      method: 'POST',
+      body: JSON.stringify(package)
+    },
+    function(er, response, body) {
+      console.log(er);
+      console.log(response)
+      console.log(body);
+      self.emit('botImage', self, {
+        url: messageFields.payload.url,
+        picture_url: messageFields.payload.picture_url,
+        payload: messageFields.payload
+      });
+    });
 };
 
 // destroys a bot by id, if no bot_id is sent, unregisters itself
