@@ -115,7 +115,7 @@ Bot.prototype.sendImage = function(_file) {
       method: 'POST',
       body: JSON.stringify(package)
     },
-    function(er, response, body) {
+    function(err, response, body) {
       if (!err) {
         var form = new formidable.IncomingForm();
         var messageFields = {};
