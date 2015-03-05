@@ -55,6 +55,12 @@ Bot.prototype.serve = function(address) {
         });
         response.end("THANKS");
         if (typeof messageFields.payload !== 'undefined') {
+          self.emit('botImage', self, {
+            url: messageFields.payload.url,
+            picture_url: messageFields.payload.picture_url,
+            payload: messageFields.payload
+          });
+        } else {
           self.emit('botMessage', self, {
             attachments: messageFields.attachments,
             avatar_url: messageFields.avatar_url,
@@ -68,12 +74,6 @@ Bot.prototype.serve = function(address) {
             system: messageFields.system,
             text: messageFields.text,
             user_id: messageFields.user_id,
-            payload: messageFields.payload
-          });
-        } else {
-          self.emit('botImage', self, {
-            url: messageFields.payload.url,
-            picture_url: messageFields.payload.picture_url,
             payload: messageFields.payload
           });
         }
