@@ -54,21 +54,29 @@ Bot.prototype.serve = function(address) {
           "Content-Type": "text/plain"
         });
         response.end("THANKS");
-        self.emit('botMessage', self, {
-          attachments: messageFields.attachments,
-          avatar_url: messageFields.avatar_url,
-          created_at: messageFields.created_at,
-          group_id: messageFields.group_id,
-          id: messageFields.id,
-          name: messageFields.name,
-          sender_id: messageFields.sender_id,
-          sender_type: messageFields.sender_type,
-          source_guid: messageFields.source_guid,
-          system: messageFields.system,
-          text: messageFields.text,
-          user_id: messageFields.user_id,
-          payload: messageFields.payload
-        });
+        if (typeof messageFields.payload !== 'undefined') {
+          self.emit('botMessage', self, {
+            attachments: messageFields.attachments,
+            avatar_url: messageFields.avatar_url,
+            created_at: messageFields.created_at,
+            group_id: messageFields.group_id,
+            id: messageFields.id,
+            name: messageFields.name,
+            sender_id: messageFields.sender_id,
+            sender_type: messageFields.sender_type,
+            source_guid: messageFields.source_guid,
+            system: messageFields.system,
+            text: messageFields.text,
+            user_id: messageFields.user_id,
+            payload: messageFields.payload
+          });
+        } else {
+          self.emit('botImage', self, {
+            url: messageFields.payload.url,
+            picture_url: messageFields.payload.picture_url,
+            payload: messageFields.payload
+          });
+        }
       });
 
     } else {
