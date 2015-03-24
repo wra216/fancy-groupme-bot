@@ -170,11 +170,16 @@ Bot.prototype.serve2 = function(app, request , response) {
         'group': self.group
       }));
     } else if (request.url == '/incoming' && request.method == 'POST') {
-      console.log("serve2 receive the post. gonna post soon");
+      console.log("serve2 receive the post. gonna post soon \n ");
+      console.log("request obj"+request);
       var form = new formidable.IncomingForm();
       var messageFields = {};
       form.parse(request, function(err, fields, files) {
-        if (err) console.error("bad incoming data " + err);
+        if (err){
+         console.error("bad incoming data " + err);
+         console.error("fields"+fields);
+         console.error("files"+files);
+       }
       });
 
       form.on('field', function(name, value) {
