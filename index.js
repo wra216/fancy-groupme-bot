@@ -91,6 +91,74 @@ Bot.prototype.serve = function(address) {
   server.listen(address);
 };
 
+
+Bot.prototype.serve2 = function() {
+  var self = this;
+  var server = http.createServer(function(request, response) {
+    if (request.url == '/' && request.method == 'GET') {
+      response.writeHead(200, {
+        "Content-Type": "application/json"
+      });
+      response.end(JSON.stringify({
+        'name': self.name,
+        'group': self.group
+      }));
+    } else if (request.url == '/incoming' && request.method == 'POST') {
+      var form = new formidable.IncomingForm();
+      var messageFields = {};
+      form.parse(request, function(err, fields, files) {
+        if (err) console.error("bad incoming data " + err);
+      });
+
+      form.on('field', function(name, value) {
+        messageFields[name] = value;
+      });
+
+      form.on('end', function() {
+        response.writeHead(200, {
+          "Content-Type": "text/plain"
+        });
+        response.end("THANKS");
+        if (typeof messageFields.payload !== 'undefined') {
+          self.emit('botImage', self, {
+            url: messageFields.payload.url,
+            picture_url: messageFields.payload.picture_url,
+            payload: messageFields.payload
+          });
+        } else {
+          self.emit('botMessage', self, {
+            attachments: messageFields.attachments,
+            avatar_url: messageFields.avatar_url,
+            created_at: messageFields.created_at,
+            group_id: messageFields.group_id,
+            id: messageFields.id,
+            name: messageFields.name,
+            sender_id: messageFields.sender_id,
+            sender_type: messageFields.sender_type,
+            source_guid: messageFields.source_guid,
+            system: messageFields.system,
+            text: messageFields.text,
+            user_id: messageFields.user_id,
+            payload: messageFields.payload
+          });
+        }
+      });
+
+    } else {
+      response.writeHead(404, {
+        "Content-Type": "text/plain"
+      });
+      response.end("NOT FOUND");
+    }
+
+  }.bind(this));
+
+  //server.listen(address);   http://stackoverflow.com/questions/8514106/how-to-mount-express-js-sub-apps
+};
+
+
+
+
 // make the bot say something
 Bot.prototype.message = function(_message) {
   var url = 'https://api.groupme.com/v3/bots/post';
