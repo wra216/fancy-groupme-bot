@@ -157,7 +157,7 @@ Bot.prototype.serve = function(address) {
 };
 
 
-Bot.prototype.serve2 = function(request , response) {
+Bot.prototype.serve2 = function(app, request , response) {
   var self = this;
   console.log("serve2 running.")
   //var server = http.createServer(function(request, response) {
@@ -211,12 +211,7 @@ Bot.prototype.serve2 = function(request , response) {
         }
       });
 
-    } else {
-      response.writeHead(404, {
-        "Content-Type": "text/plain"
-      });
-      response.end("NOT FOUND");
-    }
+    } 
 
   //}.bind(this));
 
