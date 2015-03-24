@@ -5,9 +5,10 @@ const events = require('events');
 const util = require('util');
 const http = require('http');
 const formidable = require('formidable');
+//var express  = require('express');
+//var expressapp=exports.app=express();
 
-
-console.log("Check that I can edit");
+console.log("Check that I can edit"); 
 // config { token:groupme token,
 //          group:the room to connect to,
 //          name: the bot name,
@@ -28,20 +29,12 @@ function Bot(config) {
 util.inherits(Bot, events.EventEmitter);
 
 
-Bot.prototype.app=function(){
+Bot.prototype.app=function(app, request,response){
   var self=this;
-  
-  expressapp.get('/',function(request,response){
-            response.writeHead(200, {
-        "Content-Type": "application/json"
-      });
-      response.end(JSON.stringify({
-        'name': self.name,
-        'group': self.group
-      }));
-});
+  console.log("app called.");
 
-    expressapp.post('/incoming',function(request,response){
+    app.post('/incoming',function(request,response){
+      console.log("app receive the post. gonna post soon");
     
 
       var form = new formidable.IncomingForm();
@@ -164,11 +157,10 @@ Bot.prototype.serve = function(address) {
 };
 
 
-Bot.prototype.serve2 = function() {
-  console.log("called serve2");
+Bot.prototype.serve2 = function(request , response) {
   var self = this;
-  var server = http.createServer(function(request, response) {
-    console.log("server started");
+  console.log("serve2 running.")
+  //var server = http.createServer(function(request, response) {
     if (request.url == '/' && request.method == 'GET') {
       response.writeHead(200, {
         "Content-Type": "application/json"
@@ -178,7 +170,7 @@ Bot.prototype.serve2 = function() {
         'group': self.group
       }));
     } else if (request.url == '/incoming' && request.method == 'POST') {
-      console.log("I see the message");
+      console.log("serve2 receive the post. gonna post soon");
       var form = new formidable.IncomingForm();
       var messageFields = {};
       form.parse(request, function(err, fields, files) {
@@ -201,7 +193,6 @@ Bot.prototype.serve2 = function() {
             payload: messageFields.payload
           });
         } else {
-          console.log("Gonna send that message");
           self.emit('botMessage', self, {
             attachments: messageFields.attachments,
             avatar_url: messageFields.avatar_url,
@@ -227,7 +218,7 @@ Bot.prototype.serve2 = function() {
       response.end("NOT FOUND");
     }
 
-  }.bind(this));
+  //}.bind(this));
 
   //server.listen(address);   http://stackoverflow.com/questions/8514106/how-to-mount-express-js-sub-apps
 };
