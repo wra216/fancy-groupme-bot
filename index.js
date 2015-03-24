@@ -166,8 +166,10 @@ Bot.prototype.serve = function(address) {
 
 
 Bot.prototype.serve2 = function() {
+  console.log("called serve2");
   var self = this;
   var server = http.createServer(function(request, response) {
+    console.log("server started");
     if (request.url == '/' && request.method == 'GET') {
       response.writeHead(200, {
         "Content-Type": "application/json"
