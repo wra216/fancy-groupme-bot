@@ -177,6 +177,7 @@ Bot.prototype.serve2 = function() {
         'group': self.group
       }));
     } else if (request.url == '/incoming' && request.method == 'POST') {
+      console.log("I see the message");
       var form = new formidable.IncomingForm();
       var messageFields = {};
       form.parse(request, function(err, fields, files) {
@@ -199,6 +200,7 @@ Bot.prototype.serve2 = function() {
             payload: messageFields.payload
           });
         } else {
+          console.log("Gonna send that message");
           self.emit('botMessage', self, {
             attachments: messageFields.attachments,
             avatar_url: messageFields.avatar_url,
