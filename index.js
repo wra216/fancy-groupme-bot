@@ -5,8 +5,7 @@ const events = require('events');
 const util = require('util');
 const http = require('http');
 const formidable = require('formidable');
-var express  = require('express');
-var expressapp=exports.app=express();
+
 
 console.log("Check that I can edit");
 // config { token:groupme token,
