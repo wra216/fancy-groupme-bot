@@ -181,8 +181,9 @@ Bot.prototype.serve2 = function(app, request , response) {
       form.parse(request, function(err, fields, files) {
         if (err){
          console.error("bad incoming data " + err);
-         console.error("fields"+fields);
-         console.error("files"+files);
+         console.log(util.inspect(fields, {showHidden: false, depth: null}));
+         console.log(util.inspect(files, {showHidden: false, depth: null}));
+         
        }
       });
 
