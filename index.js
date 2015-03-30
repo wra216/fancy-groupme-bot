@@ -171,7 +171,7 @@ Bot.prototype.serve2 = function(app, request , response) {
       }));
     } else if (request.url == '/incoming' && request.method == 'POST') {
       console.log("serve2 receive the post. gonna post soon \n ");
-      console.log("request obj"+request);
+       console.log("request obj"+JSON.stringify(request));
       var form = new formidable.IncomingForm();
       var messageFields = {};
       form.parse(request, function(err, fields, files) {
