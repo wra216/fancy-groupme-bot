@@ -5,6 +5,7 @@ const events = require('events');
 const util = require('util');
 const http = require('http');
 const formidable = require('formidable');
+const util = require('util');
 //var express  = require('express');
 //var expressapp=exports.app=express();
 
@@ -171,7 +172,11 @@ Bot.prototype.serve2 = function(app, request , response) {
       }));
     } else if (request.url == '/incoming' && request.method == 'POST') {
       console.log("serve2 receive the post. gonna post soon \n ");
-       console.log("request obj"+JSON.stringify(request));
+       
+       console.log(util.inspect(request, {showHidden: false, depth: null}));
+       
+       
+       
       var form = new formidable.IncomingForm();
       var messageFields = {};
       form.parse(request, function(err, fields, files) {
